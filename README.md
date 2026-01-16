@@ -1,5 +1,7 @@
 # Mastra System Check
 
+<img src="./assets/banner.png" alt="Mastra System Check" width="100%">
+
 A comprehensive Claude Code skill for validating Mastra AI agent projects. This skill performs 66 checks across 10 categories to identify configuration issues, missing best practices, and potential problems before they cause runtime errors.
 
 ## Installation
