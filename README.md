@@ -4,16 +4,16 @@ A comprehensive Claude Code skill for validating Mastra AI agent projects. This 
 
 ## Installation
 
-### Option 1: One-line install (Recommended)
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/goldk3y/mastra-system-check/main/install.sh | bash
-```
-
-### Option 2: npx (after npm publish)
+### Option 1: npx (Recommended)
 
 ```bash
 npx mastra-system-check
+```
+
+### Option 2: One-line install
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/goldk3y/mastra-system-check/main/install.sh | bash
 ```
 
 ### Option 3: Git clone
