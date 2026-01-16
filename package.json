@@ -1,0 +1,28 @@
+{
+  "name": "mastra-system-check",
+  "version": "1.0.0",
+  "description": "Claude Code skill for validating Mastra AI agent projects",
+  "bin": {
+    "mastra-system-check": "./bin/install.js"
+  },
+  "files": [
+    "bin",
+    "SKILL.md",
+    "AGENTS.md",
+    "metadata.json",
+    "rules"
+  ],
+  "keywords": [
+    "claude-code",
+    "skill",
+    "mastra",
+    "ai-agents",
+    "validation"
+  ],
+  "author": "stan",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/goldk3y/mastra-system-check"
+  }
+}

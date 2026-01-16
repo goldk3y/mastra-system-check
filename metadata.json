@@ -1,0 +1,13 @@
+{
+  "version": "1.0.0",
+  "author": "stan",
+  "x": "https://x.com/goldkey",
+  "organization": "Mastra Community",
+  "date": "January 2026",
+  "abstract": "Comprehensive system check skill for Mastra AI agent projects. Validates configuration, agents, workflows, memory, tools, context flow, prompt engineering, security, and observability across 66 rules in 10 categories. Based on Mastra documentation and best practices from Anthropic and OpenAI prompt engineering guides.",
+  "references": [
+    "https://mastra.ai/docs",
+    "https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents",
+    "https://cookbook.openai.com/examples/gpt4-1_prompting_guide"
+  ]
+}
