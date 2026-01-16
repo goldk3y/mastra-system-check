@@ -2,7 +2,7 @@
 
 <img src="./assets/banner.png" alt="Mastra System Check" width="100%">
 
-A comprehensive Claude Code skill for validating Mastra AI agent projects. This skill performs 66 checks across 10 categories to identify configuration issues, missing best practices, and potential problems before they cause runtime errors.
+A comprehensive Claude Code skill for validating Mastra AI agent projects. This skill performs **66 checks** across **10 categories** to identify configuration issues, missing best practices, and potential problems before they cause runtime errors.
 
 ## Installation
 
@@ -35,55 +35,75 @@ Download and copy this directory to:
 
 The skill will automatically activate when working with Mastra projects. You can verify installation by asking Claude Code to perform a system check on your Mastra project.
 
+---
+
 ## What It Checks
 
 ### Priority Levels
 
-| Level | Categories | Description |
-|-------|------------|-------------|
-| **CRITICAL** | Configuration | System won't function without fixes |
-| **HIGH** | Agents, Workflows, Context, Prompts | Major functionality issues |
-| **MEDIUM** | Memory, Tools, Observability, Security | Quality and maintainability |
-| **LOW** | Optimization | Performance and cost improvements |
+| Badge | Level | Description | Action |
+|-------|-------|-------------|--------|
+| 🔴 | **CRITICAL** | System won't function | Fix immediately |
+| 🟠 | **HIGH** | Major functionality issues | Fix before deployment |
+| 🟡 | **MEDIUM** | Quality and maintainability | Fix when possible |
+| 🟢 | **LOW** | Performance and cost | Nice to have |
 
 ### Check Categories
 
-1. **Configuration & Setup (6 checks)** - Storage, env vars, TypeScript, entry points
-2. **Agent Configuration (6 checks)** - Model format, instructions, tools, memory
-3. **Workflow Configuration (6 checks)** - Commit, schemas, steps, error handling
-4. **Context & Data Flow (8 checks)** - Type safety, middleware, propagation
-5. **Prompt Engineering (10 checks)** - Structure, token efficiency, examples
-6. **Memory Configuration (6 checks)** - Storage, threads, vector stores
-7. **Tool Configuration (6 checks)** - Schemas, descriptions, error handling
-8. **Observability & Evals (6 checks)** - Tracing, exporters, scorers
-9. **Security & Guardrails (6 checks)** - Auth, CORS, PII, prompt injection
-10. **Performance & Optimization (6 checks)** - Model selection, caching, batching
+| # | Category | Rules | Priority | Key Checks |
+|---|----------|-------|----------|------------|
+| 1 | Configuration & Setup | 6 | 🔴 CRITICAL | Storage, env vars, TypeScript, entry points |
+| 2 | Agent Configuration | 6 | 🟠 HIGH | Model format, instructions, tools, memory |
+| 3 | Workflow Configuration | 6 | 🟠 HIGH | .commit(), schemas, steps, error handling |
+| 4 | Context & Data Flow | 8 | 🟠 HIGH | Type safety, middleware, propagation |
+| 5 | Prompt Engineering | 10 | 🟠 HIGH | Structure, token efficiency, examples |
+| 6 | Memory Configuration | 6 | 🟡 MEDIUM | Storage, threads, vector stores |
+| 7 | Tool Configuration | 6 | 🟡 MEDIUM | Schemas, descriptions, error handling |
+| 8 | Observability & Evals | 6 | 🟡 MEDIUM* | Tracing, exporters, scorers |
+| 9 | Security & Guardrails | 6 | 🟡 MEDIUM | Auth, CORS, PII, prompt injection |
+| 10 | Performance & Optimization | 6 | 🟢 LOW | Model selection, caching, batching |
+
+*\*Observability checks are **conditional** - only run if telemetry/evals are configured.*
+
+---
 
 ## Usage
 
-### Automatic Activation
+### Trigger Keywords
 
-The skill activates when:
-- Setting up a new Mastra project
-- Debugging Mastra configuration errors
-- Reviewing Mastra code for best practices
-- Preparing a Mastra project for production
-- Troubleshooting agent, workflow, or memory issues
+The skill activates when you say any of these phrases:
 
-### Manual Activation
+| Category | Example Phrases |
+|----------|-----------------|
+| **General Check** | "check my mastra project", "mastra system check", "validate mastra" |
+| **Setup Issues** | "mastra not working", "agent won't start", "can't find mastra instance" |
+| **Memory Issues** | "memory not persisting", "conversation lost", "agent forgets context" |
+| **Workflow Issues** | "workflow stuck", "workflow not executing", "steps not running" |
+| **Context Issues** | "context not propagating", "requestcontext empty" |
+| **Deployment** | "prepare for production", "production checklist", "deploy mastra" |
 
-Ask Claude Code to run a system check:
+### Quick Check Commands
+
+Ask Claude to run specific checks:
 
 ```
 Run a Mastra system check on this project
 ```
 
-Or check specific categories:
-
 ```
 Check my Mastra agent configurations
+```
+
+```
 Validate my workflow setup
-Review my memory configuration
+```
+
+```
+Review my memory configuration for issues
+```
+
+```
+Is my Mastra project ready for production?
 ```
 
 ### Output Format
@@ -91,35 +111,32 @@ Review my memory configuration
 For each issue found:
 
 ```
-[PRIORITY] Check ID: Rule Name
-- Issue: Description of the problem
-- Location: File path and line number
-- Fix: Specific code change to resolve
-- Reference: Link to Mastra documentation
+### 🔴 CRITICAL Issues (count)
+
+**[rule-id] Rule Name**
+- **Location:** `file/path.ts:lineNumber`
+- **Issue:** Clear description of what's wrong
+- **Fix:**
+  ```typescript
+  // Corrected code example
+  ```
+- **Docs:** https://mastra.ai/docs/relevant-section
 ```
 
-## File Structure
+---
 
-```
-mastra-system-check/
-├── SKILL.md          # Skill metadata and triggers
-├── AGENTS.md         # Compiled comprehensive guide
-├── metadata.json     # Version and organization info
-├── README.md         # This file
-└── rules/
-    ├── _sections.md  # Category hierarchy
-    ├── _template.md  # Template for new rules
-    ├── config-*.md   # Configuration checks (CRITICAL)
-    ├── agent-*.md    # Agent checks (HIGH)
-    ├── workflow-*.md # Workflow checks (HIGH)
-    ├── context-*.md  # Context checks (HIGH)
-    ├── prompt-*.md   # Prompt checks (HIGH)
-    ├── memory-*.md   # Memory checks (MEDIUM)
-    ├── tool-*.md     # Tool checks (MEDIUM)
-    ├── observability-*.md  # Observability checks (MEDIUM)
-    ├── security-*.md       # Security checks (MEDIUM)
-    └── optimization-*.md   # Optimization checks (LOW)
-```
+## Quick Checks (Run First)
+
+Before deep analysis, the skill verifies these **4 common issues** that cause most failures:
+
+| Check | Command | Fix |
+|-------|---------|-----|
+| Storage configured? | `grep "storage:" src/mastra/index.ts` | Add LibSQLStore |
+| API keys set? | `cat .env \| grep API_KEY` | Add to .env |
+| Model format correct? | All models use `provider/model-name` | Fix format |
+| Workflows committed? | Every workflow ends with `.commit()` | Add .commit() |
+
+---
 
 ## Most Common Issues
 
@@ -127,11 +144,13 @@ These are the issues most frequently caught by the system check:
 
 1. **Missing storage provider** - Memory and workflows won't persist
 2. **Missing API keys** - Agent calls fail at runtime
-3. **Wrong model format** - Should be `provider/model-name`
+3. **Wrong model format** - Should be `provider/model-name` (e.g., `openai/gpt-4o`)
 4. **No thread/resource in memory calls** - Messages aren't tracked
 5. **Untyped RequestContext** - No type safety across components
 6. **Security processors not first** - PII stored before redaction
 7. **Missing .commit() on workflows** - Workflow won't execute
+
+---
 
 ## Quick Fixes
 
@@ -168,10 +187,76 @@ DATABASE_URL=file:./mastra.db
     "target": "ES2022",
     "module": "ES2022",
     "moduleResolution": "bundler",
-    "strict": true
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true
   }
 }
 ```
+
+### Model Format
+
+```typescript
+// ❌ Wrong
+model: "gpt-4o"
+
+// ✅ Correct  
+model: "openai/gpt-4o"
+```
+
+### Workflow Commit
+
+```typescript
+// ❌ Wrong - missing .commit()
+const workflow = new Workflow({ id: "my-flow" })
+  .step("step1", { execute: async () => ({ done: true }) });
+
+// ✅ Correct
+const workflow = new Workflow({ id: "my-flow" })
+  .step("step1", { execute: async () => ({ done: true }) })
+  .commit();  // Required!
+```
+
+---
+
+## File Structure
+
+```
+mastra-system-check/
+├── SKILL.md          # Skill metadata, triggers, and execution steps
+├── AGENTS.md         # Complete 66-rule guide with examples
+├── metadata.json     # Version and feature info
+├── README.md         # This file
+├── assets/
+│   └── banner.png    # Header image
+├── bin/
+│   └── install.js    # npx installer
+├── install.sh        # Shell installer
+└── rules/
+    ├── _sections.md  # Category hierarchy
+    ├── _template.md  # Template for new rules
+    ├── config-*.md   # Configuration checks (CRITICAL)
+    ├── agent-*.md    # Agent checks (HIGH)
+    ├── workflow-*.md # Workflow checks (HIGH)
+    ├── context-*.md  # Context checks (HIGH)
+    ├── prompt-*.md   # Prompt checks (HIGH)
+    ├── memory-*.md   # Memory checks (MEDIUM)
+    ├── tool-*.md     # Tool checks (MEDIUM)
+    ├── observability-*.md  # Observability checks (MEDIUM)
+    ├── security-*.md       # Security checks (MEDIUM)
+    └── optimization-*.md   # Optimization checks (LOW)
+```
+
+---
+
+## Version History
+
+| Version | Changes |
+|---------|---------|
+| **1.1.0** | Enhanced skill activation with keyword triggers, quick checks, explicit execution steps, improved output format with examples |
+| **1.0.0** | Initial release with 66 rules across 10 categories |
+
+---
 
 ## Contributing
 
@@ -182,12 +267,16 @@ To add new rules:
 3. Write clear "What to Check", "Incorrect", "Correct", and "How to Fix" sections
 4. Update `rules/_sections.md` if adding a new category
 
+---
+
 ## References
 
 - [Mastra Documentation](https://mastra.ai/docs)
 - [Mastra GitHub](https://github.com/mastra-ai/mastra)
 - [AI SDK Documentation](https://sdk.vercel.ai/docs)
 - [Anthropic Prompt Engineering](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents)
+
+---
 
 ## License
 
